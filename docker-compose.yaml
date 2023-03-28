@@ -1,0 +1,29 @@
+version: '2'
+
+volumes:
+  wildfly_data:
+  oracle_data:
+
+services:
+  wildfly:
+    container_name: wildfly
+    image: quay.io/wildfly/wildfly
+    ports:
+      - '8080:8080'
+      - '9990:9990'
+    volumes:
+      - 'wildfly_data:/opt/jboss/wildfly/'
+    environment:
+      - WILDFLY_PASSWORD=password
+  oracle:
+    image: container-registry.oracle.com/database/express:21.3.0-xe
+    container_name: oracle
+    ports:
+      - 1521:1521
+      - 8080:8080
+      - 5500:5500
+    volumes:
+      - 'oracle_data:/opt/oracle/oradata/'
+    environment:
+      ORACLE_PWD: password
+      
